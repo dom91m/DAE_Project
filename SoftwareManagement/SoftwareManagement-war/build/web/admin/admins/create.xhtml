@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/templates/skeleton.xhtml">
+        <ui:define name="title">Administrador: Criar - Software Management</ui:define>
+        <ui:define name="main"> 
+            <h:form>         
+                <p:panel id="panel" header="Form" style="margin-bottom:10px;">
+                    <h:panelGrid columns="3" cellpadding="5" styleClass="panelGridColumns">
+                        <h:outputLabel for="username" value="Username:" />
+                        <p:inputText 
+                            id="username"
+                            size="20"
+                            required="true"
+                            requiredMessage="Erro: Username nao pode estar vazio."
+                            value="#{administratorManager.newAdmin.username}">
+                            <f:validator validatorId="usernameValidator"/>
+                        </p:inputText>
+                        <h:message for="username" errorStyle="color: red" />
+
+                        <h:outputLabel for="password" value="Password:" />
+                        <h:inputSecret styleClass="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all"
+                            id="password"
+                            size="20"
+                            required="true"
+                            requiredMessage="Erro: Password nao pode estar vazia."
+                            value="#{administratorManager.newAdmin.password}"/>
+                        <h:message for="password" errorStyle="color: red" />                        
+
+                        <h:outputLabel for="name" value="Name: " />
+                        <p:inputText 
+                            id="name"
+                            size="52"
+                            required="true"
+                            requiredMessage="Erro: Nome nao pode estar vazio."                            
+                            value="#{administratorManager.newAdmin.name}" />
+                        <h:message for="name" errorStyle="color: red" />
+
+                        <h:outputLabel for="email" value="Email:" />
+                        <p:inputText
+                            id="email"
+                            size="52"
+                            required="true"
+                            requiredMessage="Erro: Email nao pode estar vazio."                            
+                            value="#{administratorManager.newAdmin.email}" >
+                            <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+                        </p:inputText>    
+                        <h:message for="email" errorStyle="color: red" />
+
+                        <h:outputLabel for="cargo" value="Cargo:" />
+                        <p:selectOneMenu
+                            id="cargo"
+                            value="#{administratorManager.newAdmin.cargoCode}" >
+                            <f:selectItems
+                                value="#{administratorManager.allCargosREST}"
+                                var="cargo"
+                                itemValue="#{cargo.code}"
+                                itemLabel="#{cargo.name}" />
+                        </p:selectOneMenu>
+                        <br/>
+                        <h:commandButton
+                            id="submit"
+                            value="Criar"
+                            binding="#{administratorManager.component}" 
+                            action="#{administratorManager.createAdminREST}" />
+                        <h:message for="submit" style="color: red"/>
+                    </h:panelGrid >                       
+                </p:panel>
+            </h:form>
+
+            <h:link value="Recuar" outcome="./administracao_utilizadores?faces-redirect=true"/>
+            <h:messages style="color:red"/>     
+        </ui:define>
+    </ui:composition> 
+</html>
+

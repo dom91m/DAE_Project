@@ -1,0 +1,35 @@
+database: dae_project
+	username: dae
+	password: dae
+
+nome do projeto: SoftwareManagement
+framework: JavaServer Faces
+
+	Persistence Unit Name:
+		SoftwareManagementPU
+	
+	Data Source: software_management
+	
+	Connection: jdbc:derby: …/DAE_PROJECT [dae on DAE];
+	
+	Table Generation Strategy: Drop and Create
+
+--------------------------------------------------------
+
+						Versão 2.2
+
+						User Stories:
+							1
+							2
+							3
+							4
+							-
+							6
+							7
+							8
+							-
+
+--------------------------------------------------------
+
+2.1 - Login corrigido. Forum a guardar o nome do utilizador atual.
+2.2 - Criação do userManager. Clientes consultam as suas configurações, admin e cliente criam questoes e respondem.

@@ -1,0 +1,7 @@
+/*Alinha as colunas em algumas tabelas (ex: páginas de detalhes dos admins, etc)*/
+.panelGridColumns td {
+    vertical-align: top;  
+} 
+.headerDataTable {
+    text-align: left !important;
+}

@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="../templates/skeleton.xhtml">
+        <ui:define name="title">Templates de Configuração - Software Management</ui:define>
+        <ui:define name="main">
+
+            <!-- TABELA CONFIGURACOES -->
+            <h:form>
+                <p:dataTable 
+                    var="configuracao"
+                    summary="Lista de todas as configurações"
+                    value="#{publicManager.allConfiguracoesTemplatesREST}"
+                    widgetVar="configsTable"
+                    emptyMessage="Não foram encontradas configurações com este(s) critério(s)."
+                    filteredValue="#{publicManager.filteredConfigs}">
+                    <f:facet name="header">
+                        Configurações
+                    </f:facet>                         
+
+                    <p:column filterBy="#{configuracao.descricao}" headerText="Descrição" filterMatchMode="contains">
+                        <h:outputText value="${configuracao.descricao}" />
+                    </p:column>
+
+                    <p:column filterBy="#{configuracao.estado}" headerText="Estado" filterMatchMode="exact">
+                        <f:facet name="filter">
+                            <p:selectOneMenu onchange="PF('configsTable').filter()" styleClass="custom-filter">
+                                <f:selectItem itemLabel="Selecione um:" itemValue="#{null}" noSelectionOption="true" />
+                                <f:selectItems value="#{publicManager.allEstados}" var="estado" itemValue="#{configuracao.estado}" itemLabel="#{configuracao.estado}" />
+                            </p:selectOneMenu>
+                        </f:facet>
+                        <h:outputText value="${configuracao.estado}" />
+                    </p:column>
+
+
+
+                    <p:column>
+                        <f:facet name="header">
+                            <p:outputPanel styleClass="pesquisa">
+                                <h:outputText value="Pesquisar todos os campos:" />
+                                <p:inputText id="globalFilter" onkeyup="PF('configsTable').filter()" style="width:150px" placeholder="Insira palavra-chave" />
+                            </p:outputPanel>
+                        </f:facet> 
+
+                        <h:commandLink value="Detalhes" action="details?faces-redirect=true">
+                            <f:setPropertyActionListener target="#{publicManager.currentConfiguracao}" value="#{configuracao}" />
+                        </h:commandLink>
+                        &nbsp;
+
+                        <h:commandLink value="Materiais de Apoio" action="apoio?faces-redirect=true">
+                            <f:setPropertyActionListener target="#{publicManager.currentConfiguracao}" value="#{configuracao}" />
+                        </h:commandLink>
+                        &nbsp;
+
+                    </p:column>           
+
+
+                </p:dataTable>
+            </h:form>
+
+            <br/>
+            <br/>
+
+            <h:messages errorStyle="color: red" />
+
+        </ui:define>
+    </ui:composition> 
+</html>
+

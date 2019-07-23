@@ -1,0 +1,218 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="../../templates/skeleton.xhtml">
+        <ui:define name="title">Configuração: Atualizar - Software Management</ui:define>
+        <ui:define name="main">
+            <h:form>             
+                <!-- DETALHES DA CONFIGURAÇÃO -->
+                <p:panel id="panel" header="Configuração: Atualizar detalhes" style="margin-bottom:10px;">
+                    <h:panelGrid columns="3" cellpadding="5" styleClass="panelGridColumns">     
+                        <p:outputLabel for="descricao" value="Descrição:" />
+                        <h:outputText 
+                            id="descricao"
+                            value="#{administratorManager.currentConfiguracao.descricao}"/>
+                        <h:message for="descricao" errorStyle="color: red" />
+
+                        <h:outputLabel for="estado" value="Estado:" />
+                        <p:selectOneMenu
+                            id="estado"
+                            value="#{administratorManager.currentConfiguracao.estado}" >
+                            <f:selectItem itemLabel="ATIVO" itemValue="ATIVO" />
+                            <f:selectItem itemLabel="INATIVO" itemValue="INATIVO" />
+                            <f:selectItem itemLabel="SUSPENSO" itemValue="SUSPENSO" />
+                        </p:selectOneMenu>
+                        <br/>
+
+
+                        <p:outputLabel for="nomeDoSoftware" value="Nome do Software: " />
+                        <h:outputText 
+                            id="nomeDoSoftware"
+                            value="#{administratorManager.currentConfiguracao.softwareName}"/>
+                        <h:message for="nomeDoSoftware" errorStyle="color: red" />
+
+
+                        <p:outputLabel for="versao" value="Versão:" />
+                        <h:inputText
+                            id="versao"
+                            size="25"
+                            required="true"
+                            requiredMessage="Erro: versão não pode estar vazia."                        
+                            value="#{administratorManager.currentConfiguracao.versao}" />
+                        <h:message for="versao" errorStyle="color: red" />
+
+                        <h:commandButton
+                            id="submit"
+                            value="Atualizar"
+                            action="#{administratorManager.updateConfiguracaoREST}" />
+                        <h:message for="submit" style="color: red"/>
+                    </h:panelGrid >                       
+                </p:panel>
+            </h:form>
+
+            <br/>
+            <br/>
+            <!-- CLIENTES NA CONFIGURAÇÃO-->
+            <p:dataTable
+                var="cliente"
+                summary="List of enrolled clientes"
+                value="#{administratorManager.enrolledClientesNaConfiguracaoREST}">
+
+                <f:facet name="header" class="headerDataTable">
+                    Configuração: Clientes associados
+                </f:facet>
+
+                <p:column headerText="Username">
+                    <h:outputText value="#{cliente.username}" />
+                </p:column>
+
+                <p:column headerText="Empresa">
+                    <h:outputText value="#{cliente.name}" />
+                </p:column>
+
+                <p:column headerText="Email">
+                    <h:outputText value="#{cliente.email}" />
+                </p:column>
+
+                <p:column headerText="Pessoa de Contacto">
+                    <h:outputText value="#{cliente.pessoaDeContacto}" />
+                </p:column>
+
+                <p:column headerText="Ações">
+                    <h:form>
+                        <h:commandLink value="Remover" actionListener="#{administratorManager.removeClienteDaConfiguracaoREST}">
+                            <f:param name="configuracaoDescricao" id="configuracaoDescricao" value="#{administratorManager.currentConfiguracao.descricao}" />
+                            <f:param name="clienteUsername" id="clienteUsername" value="#{cliente.username}" />
+                        </h:commandLink>
+                    </h:form>
+                </p:column>         
+            </p:dataTable>
+
+            <br/>
+            <br/>
+            <!-- MODULOS NA CONFIGURAÇÃO-->
+            <p:dataTable
+                var="modulo"
+                summary="List of enrolled modulos"
+                value="#{administratorManager.enrolledModulosREST}">
+
+                <f:facet name="header" class="headerDataTable">
+                    Configuração: Módulos associados
+                </f:facet>
+
+                <p:column headerText="Código">
+                    <h:outputText value="#{modulo.code}" />
+                </p:column>
+
+                <p:column headerText="Nome">
+                    <h:outputText value="#{modulo.name}" />
+                </p:column>
+
+                <p:column headerText="Descrição">
+                    <h:outputText value="#{modulo.descricao}" />
+                </p:column>
+
+                <p:column headerText="Versão">
+                    <h:outputText value="#{modulo.versao}" />
+                </p:column>
+
+                <p:column headerText="Ações">
+                    <h:form>
+                        <h:commandLink value="Remover" actionListener="#{administratorManager.removeModuloDaConfiguracaoREST}">
+                            <f:param name="configuracaoDescricao" id="configuracaoDescricao" value="#{administratorManager.currentConfiguracao.descricao}" />
+                            <f:param name="moduloCode" id="moduloCode" value="#{modulo.code}" />
+                        </h:commandLink>
+                    </h:form>
+                </p:column>            
+            </p:dataTable>
+
+            <br/>
+            <br/>
+            <!-- MODULOS QUE NÃO ESTÃO NA CONFIGURAÇÃO-->
+            <p:dataTable
+                var="moduloNotInConfiguracao"
+                summary="Lista de modulos a adicionar à Configuração"
+                value="#{administratorManager.enrolledModulosNotInConfiguracaoREST}">
+
+                <f:facet name="header" class="headerDataTable">
+                    Adicionar outros modulos
+                </f:facet>
+
+                <p:column headerText="Código">
+                    <h:outputText value="#{moduloNotInConfiguracao.code}" />
+                </p:column>
+
+                <p:column headerText="Nome">
+                    <h:outputText value="#{moduloNotInConfiguracao.name}" />
+                </p:column>
+
+                <p:column headerText="Descrição">
+                    <h:outputText value="#{moduloNotInConfiguracao.descricao}" />
+                </p:column>
+
+                <p:column headerText="Versão">
+                    <h:outputText value="#{moduloNotInConfiguracao.versao}" />
+                </p:column>
+
+                <p:column headerText="Ações">
+                    <h:form>                        
+                        <h:commandLink value="Adicionar" actionListener="#{administratorManager.addModuloNaConfiguracaoREST}">
+                            <f:param name="configuracaoDescricao" id="configuracaoDescricao" value="#{administratorManager.currentConfiguracao.descricao}" />
+                            <f:param name="moduloCode" id="moduloCode" value="#{moduloNotInConfiguracao.code}" />
+                        </h:commandLink>
+                    </h:form>
+                </p:column> 
+            </p:dataTable>
+
+
+            <br/>
+            <br/>
+            <!-- MATERIAIS DE APOIO -->
+            <div class="ui-datatable-header ui-widget-header ui-corner-top" style="text-align: center;">
+                Materiais de Apoio
+            </div>
+            <br/>
+            <div align="center">
+                <h:form enctype="multipart/form-data">
+                    <p:growl id="messages" showDetail="true" />
+                    <p:fileUpload value="#{uploadManager.file}" mode="simple" skinSimple="true" label="Escolher"/>
+                    <p:commandButton
+                        value="Enviar" 
+                        ajax="false" 
+                        actionListener="#{uploadManager.upload}" 
+                        action="#{administratorManager.uploadDocument}"/>
+                </h:form>
+
+                <br/>
+
+                <h:form rendered="${not empty administratorManager.documents}">
+
+                    <h:outputLabel for="document" value="Material de apoio: " />
+                    <h:selectOneMenu id="document" value="#{downloadManager.documentId}" >
+                        <f:selectItems 
+                            value="${administratorManager.documents}" 
+                            var="doc" 
+                            itemValue="${doc.id}" 
+                            itemLabel="${doc.desiredName}" />
+                    </h:selectOneMenu>
+                    <br></br>
+
+                    <p:commandButton value="Download" ajax="false">
+                        <p:fileDownload value="#{downloadManager.file}" />
+                    </p:commandButton>
+                </h:form>
+            </div>
+            <br/>
+
+            <h:link value="Recuar" outcome="/admin/administracao_configuracoes?faces-redirect=true"/>
+
+            <h:messages errorStyle="color: red" />        
+
+        </ui:define>
+    </ui:composition>
+</html>
+

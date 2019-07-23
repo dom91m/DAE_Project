@@ -1,0 +1,187 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/templates/skeleton.xhtml">
+        <ui:define name="title">Index</ui:define>
+        <ui:define name="main">
+            <div class="ui-datatable-header ui-widget-header ui-corner-top" style="text-align: center;">
+                Administração de Utilizadores
+            </div>
+            <!-- TABELA CARGOS -->
+            <h:form>
+                <p:dataTable 
+                    var="cargo"
+                    summary="Lista de todos os cargos"
+                    value="#{dataTableManager.allCargosREST}"
+                    widgetVar="cargosTable"
+                    emptyMessage="Não foram encontrados cargos com este(s) critério(s)."
+                    filteredValue="#{dataTableManager.filteredCargos}">
+
+                    <f:facet name="header">
+                        Cargos
+                    </f:facet>   
+
+                    <p:column filterBy="#{cargo.code}" headerText="Código" filterMatchMode="contains">
+                        <h:outputText value="${cargo.code}" />
+                    </p:column>
+                    <p:column filterBy="#{cargo.name}" headerText="Nome" filterMatchMode="contains">
+                        <f:facet name="filter">
+                            <p:selectOneMenu onchange="PF('cargosTable').filter()" styleClass="custom-filter">
+                                <f:selectItem itemLabel="Selecione um:" itemValue="#{null}" noSelectionOption="true" />
+                                <f:selectItems value="#{dataTableManager.allCargosREST}" var="cargo" itemValue="#{cargo.name}" itemLabel="#{cargo.name}" />
+                            </p:selectOneMenu>
+                        </f:facet>
+                        <h:outputText value="${cargo.name}" />
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <p:outputPanel styleClass="pesquisa">
+                                <h:outputText value="Pesquisar todos os campos:" />
+                                <p:inputText id="globalFilter" onkeyup="PF('cargosTable').filter()" style="width:150px" placeholder="Insira palavra-chave" />
+                            </p:outputPanel>
+                        </f:facet>      
+
+                        <h:commandLink value="Detalhes" action="cargos/details.xhtml?faces-redirect=true">
+                            <f:setPropertyActionListener target="#{administratorManager.currentCargo}" value="#{cargo}" />
+                        </h:commandLink>
+                        &nbsp;
+                        <h:commandLink value="Remover estes Admins" actionListener="#{administratorManager.removeCargoREST}">
+                            <f:param name="cargoCode" id="cargoCode" value="#{cargo.code}" />
+                        </h:commandLink>
+
+                    </p:column>                        
+                </p:dataTable>
+            </h:form>
+
+            <h:link value="Novo cargo" outcome="cargos/create.xhtml"/>
+            <br/>
+            <br/>
+
+            <!-- TABELA ADMINS -->
+            <h:form>
+                <p:dataTable 
+                    var="admin" 
+                    summary="Lista de todos os administradores"
+                    value="#{dataTableManager.allAdminsREST}"
+                    widgetVar="adminsTable"
+                    emptyMessage="Não foram encontrados administradores com este(s) critério(s)."
+                    filteredValue="#{dataTableManager.filteredAdmins}">
+
+                    <f:facet name="header">
+                        Administradores
+                    </f:facet>       
+
+                    <p:column filterBy="#{admin.username}" headerText="Username" filterMatchMode="contains">
+                        <h:outputText value="${admin.username}" />
+                    </p:column>
+                    <p:column filterBy="#{admin.name}" headerText="Nome" filterMatchMode="contains">
+                        <h:outputText value="${admin.name}" />
+                    </p:column>
+                    <p:column filterBy="#{admin.email}" headerText="Email" filterMatchMode="contains">
+                        <h:outputText value="${admin.email}" />
+                    </p:column>
+                    <p:column filterBy="#{admin.cargoName}" headerText="Cargo" filterMatchMode="contains">
+                        <f:facet name="filter">
+                            <p:selectOneMenu onchange="PF('adminsTable').filter()" styleClass="custom-filter">
+                                <f:selectItem itemLabel="Selecione um:" itemValue="#{null}" noSelectionOption="true" />
+                                <f:selectItems value="#{dataTableManager.allCargosREST}" var="cargo" itemValue="#{cargo.name}" itemLabel="#{cargo.name}" />
+                            </p:selectOneMenu>
+                        </f:facet>
+                        <h:outputText value="${admin.cargoName}" />
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <p:outputPanel styleClass="pesquisa">
+                                <h:outputText value="Pesquisar todos os campos:" />
+                                <p:inputText id="globalFilter" onkeyup="PF('adminsTable').filter()" style="width:150px" placeholder="Insira palavra-chave" />
+                            </p:outputPanel>
+                        </f:facet>                              
+                        <h:commandLink value="Detalhes" action="admins/details?faces-redirect=true">
+                            <f:setPropertyActionListener target="#{administratorManager.currentAdmin}" value="#{admin}" />
+                        </h:commandLink>
+                        &nbsp;
+                        <h:commandLink value="Atualizar" action="admins/update?faces-redirect=true">
+                            <f:setPropertyActionListener target="#{administratorManager.currentAdmin}" value="#{admin}" />
+                        </h:commandLink>
+                        &nbsp;
+                        <h:commandLink value="Remover" actionListener="#{administratorManager.removeAdminREST}">
+                            <f:param name="adminUsername" id="adminUsername" value="#{admin.username}" />
+                        </h:commandLink>
+                    </p:column> 
+
+                </p:dataTable>
+            </h:form>
+            <h:link value="Novo admin" outcome="admins/create"/>
+            <br/>
+            <br/>       
+
+            <!-- TABELA CLIENTES -->
+            <h:form>   
+                <p:dataTable 
+                    var="cliente"
+                    summary="Lista de todos os clientes"
+                    value="#{dataTableManager.allClientesREST}"
+                    widgetVar="clientsTable"
+                    emptyMessage="Não foram encontrados clientes com este(s) critério(s)."
+                    filteredValue="#{dataTableManager.filteredClients}">
+
+                    <f:facet name="header">
+                        Clientes
+                    </f:facet>        
+
+                    <p:column filterBy="#{cliente.username}" headerText="Username" filterMatchMode="contains">
+                        <h:outputText value="${cliente.username}" />
+                    </p:column>
+                    <p:column filterBy="#{cliente.name}" headerText="Nome" filterMatchMode="contains">
+                        <h:outputText value="${cliente.name}" />
+                    </p:column>
+                    <p:column filterBy="#{cliente.email}" headerText="Email" filterMatchMode="contains">
+                        <h:outputText value="${cliente.email}" />
+                    </p:column>
+                    <p:column filterBy="#{cliente.morada}" headerText="Morada" filterMatchMode="contains">
+                        <h:outputText value="${cliente.morada}" />
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <p:outputPanel styleClass="pesquisa">
+                                <h:outputText value="Pesquisar todos os campos:" />
+                                <p:inputText id="globalFilter" onkeyup="PF('clientsTable').filter()" style="width:150px" placeholder="Insira palavra-chave" />
+                            </p:outputPanel>
+                        </f:facet> 
+
+                        <h:commandLink value="Detalhes" action="clientes/details?faces-redirect=true">
+                            <f:setPropertyActionListener target="#{administratorManager.currentCliente}" value="#{cliente}" />
+                        </h:commandLink>
+                        &nbsp;
+                        <!-- UPDATE CLIENTE -->
+                        <h:commandLink value="Atualizar" action="clientes/update?faces-redirect=true">
+                            <f:setPropertyActionListener target="#{administratorManager.currentCliente}" value="#{cliente}" />
+                        </h:commandLink>
+                        &nbsp;
+                        <!-- REMOVE CLIENTE -->
+                        <h:commandLink value="Remover" actionListener="#{administratorManager.removeClienteREST}">
+                            <f:param name="clienteUsername" id="clienteUsername" value="#{cliente.username}" />
+                        </h:commandLink>
+
+                    </p:column> 
+                </p:dataTable>
+            </h:form>
+
+
+            <h:link value="Novo cliente" outcome="clientes/create.xhtml"/>
+            <br/>
+            <br/>
+
+            <h:messages errorStyle="color: red" />
+            <h:link value="Recuar" outcome="./index_menu.xhtml"/>
+        </ui:define>
+    </ui:composition>
+
+</html>

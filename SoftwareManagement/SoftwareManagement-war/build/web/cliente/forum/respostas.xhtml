@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="../../templates/skeleton.xhtml">
+        <ui:define name="title">Configuração: Questao - Software Management</ui:define>
+        <ui:define name="main">
+            <h:form>         
+                <p:panel id="panel" header="Configuração: Questão" style="margin-bottom:10px;">
+                    <h:panelGrid columns="2" cellpadding="5" styleClass="panelGridColumns">
+                        <p:outputLabel for="titulo" value="Situação: " />
+                        <h:outputText 
+                            id="titulo"
+                            value="#{clienteManager.currentQuestao.titulo}"/>
+                        <p:outputLabel for="username" value="Colocada por: " />
+                        <h:outputText 
+                            id="username"
+                            value="#{clienteManager.currentQuestao.username}"/>
+                        <p:outputLabel for="data" value="Data:" />
+                        <h:outputText 
+                            id="data"
+                            value="#{clienteManager.currentQuestao.data}"/>                   
+                    </h:panelGrid >                       
+                </p:panel>
+            </h:form>
+
+            <p:dataTable
+                var="resposta"
+                summary="List of enrolled respostas"
+                value="#{clienteManager.enrolledRespostasREST}">
+                <f:facet name="header" class="headerDataTable">
+                    Configuração: Respostas a esta situação
+                </f:facet>  
+
+                <p:column headerText="Resposta: ">
+                    <h:outputText value="#{resposta.texto}" />
+                </p:column>
+
+                <p:column headerText="Colocada por: ">
+                    <h:outputText value="#{resposta.username}" />
+                </p:column>
+
+                <p:column headerText="Data: ">
+                    <h:outputText value="#{resposta.data}" />
+                </p:column>
+
+            </p:dataTable>
+
+
+            <br/><br/>
+
+            <h:form>         
+                <p:panel id="panel" header="Responder a esta questão" style="margin-bottom:10px;">
+                    <h:panelGrid columns="2" cellpadding="5" styleClass="panelGridColumns">   
+
+                        <h:outputLabel for="id" value="Id:" />
+                        <p:inputText 
+                            id="id"
+                            size="20"
+                            required="true"
+                            requiredMessage="Error: id não pode estar vazia."
+                            value="#{clienteManager.newResposta.id}">
+                        </p:inputText>
+
+                        <h:outputLabel for="texto" value="Texto: " />
+                        <p:inputText 
+                            id="texto"
+                            size="100"
+                            required="true"
+                            requiredMessage="Error: texto não pode estar vazia."
+                            value="#{clienteManager.newResposta.texto}">
+                        </p:inputText>
+
+
+                        <h:commandButton
+                            id="submit"
+                            value="Create"
+                            binding="#{clienteManager.component}" 
+                            action="#{clienteManager.createRespostaREST}" />
+                        <h:message for="submit" style="color: red"/>
+                    </h:panelGrid >                       
+                </p:panel>
+            </h:form>                
+
+            <h:link value="Recuar" outcome="/cliente/cliente_configuracoes?faces-redirect=true"/>
+
+            <h:messages errorStyle="color: red" />       
+
+
+        </ui:define>
+    </ui:composition> 
+</html>
+

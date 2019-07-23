@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="../../templates/skeleton.xhtml">
+        <ui:define name="title">Software: Atualizar - Software Management</ui:define>
+        <ui:define name="main">
+            <h:form>                  
+                <p:panel id="panel" header="Software: Atualizar detalhes" style="margin-bottom:10px;">
+                    <h:panelGrid columns="2" cellpadding="5" styleClass="panelGridColumns">     
+                        <p:outputLabel for="id" value="Id:" />
+                        <h:outputText 
+                            id="id"
+                            value="#{administratorManager.currentSoftware.id}"/>
+
+                        <p:outputLabel for="name" value="Nome:" />
+                        <h:inputText 
+                            id="name"
+                            size="52"
+                            required="true"
+                            requiredMessage="Erro: Nome não pode estar vazio."                       
+                            value="#{administratorManager.currentSoftware.name}" />
+
+                        <p:outputLabel for="descricao" value="Descrição:" />
+                        <h:inputText 
+                            id="descricao"
+                            size="52"
+                            required="true"
+                            requiredMessage="Erro: Nome não pode estar vazio."                       
+                            value="#{administratorManager.currentSoftware.descricao}" />
+
+                        <p:outputLabel for="versao" value="Versão" />
+                        <h:inputText 
+                            id="versao"
+                            size="52"
+                            required="true"
+                            requiredMessage="Erro: Versão não pode estar vazio."                       
+                            value="#{administratorManager.currentSoftware.versao}" />
+
+                        <h:commandButton
+                            id="submit"
+                            value="Atualizar"
+                            action="#{administratorManager.updateSoftwareREST}" />
+                        <h:message for="submit" style="color: red"/>
+                    </h:panelGrid >                       
+                </p:panel>
+            </h:form>
+
+            <h:link value="Recuar" outcome="/admin/administracao_softwares?faces-redirect=true"/>
+
+            <h:messages errorStyle="color: red" />        
+
+        </ui:define>
+    </ui:composition>
+</html>
+

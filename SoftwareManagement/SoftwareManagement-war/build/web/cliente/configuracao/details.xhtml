@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="../../templates/skeleton.xhtml">
+        <ui:define name="title">Configuração: Detalhes - Software Management</ui:define>
+        <ui:define name="main">
+            <h:form>             
+                <!-- DETALHES DA CONFIGURAÇÃO -->
+                <p:panel id="panel" header="Configuração: Detalhes" style="margin-bottom:10px;">
+                    <h:panelGrid columns="3" cellpadding="5" styleClass="panelGridColumns">     
+                        <p:outputLabel for="descricao" value="Descrição:" />
+                        <h:outputText 
+                            id="descricao"
+                            value="#{clienteManager.currentConfiguracao.descricao}"/>
+                        <h:message for="descricao" errorStyle="color: red" />
+
+                        <p:outputLabel for="estado" value="Estado: " />
+                        <h:outputText 
+                            id="estado"
+                            value="#{clienteManager.currentConfiguracao.estado}"/>
+                        <h:message for="estado" errorStyle="color: red" />
+
+                        <p:outputLabel for="nomeDoSoftware" value="Nome do Software: " />
+                        <h:outputText 
+                            id="nomeDoSoftware"
+                            value="#{clienteManager.currentConfiguracao.softwareName}"/>
+                        <h:message for="nomeDoSoftware" errorStyle="color: red" />
+
+
+                        <p:outputLabel for="versao" value="Versão: " />
+                        <h:outputText 
+                            id="versao"
+                            value="#{clienteManager.currentConfiguracao.versao}"/>
+                        <h:message for="versao" errorStyle="color: red" />
+
+                    </h:panelGrid >                       
+                </p:panel>
+            </h:form>
+
+            <br/>
+            <br/>
+
+
+            <!-- MODULOS NA CONFIGURAÇÃO-->
+            <p:dataTable
+                var="modulo"
+                summary="List of enrolled modulos"
+                value="#{clienteManager.enrolledModulosREST}">
+
+                <f:facet name="header" class="headerDataTable">
+                    Configuração: Módulos associados
+                </f:facet>
+
+                <p:column headerText="Código">
+                    <h:outputText value="#{modulo.code}" />
+                </p:column>
+
+                <p:column headerText="Nome">
+                    <h:outputText value="#{modulo.name}" />
+                </p:column>
+
+                <p:column headerText="Descrição">
+                    <h:outputText value="#{modulo.descricao}" />
+                </p:column>
+
+                <p:column headerText="Versão">
+                    <h:outputText value="#{modulo.versao}" />
+                </p:column>
+
+            </p:dataTable>
+
+            <br/>
+            <br/>
+
+
+            <!-- MATERIAIS DE APOIO -->
+            <div class="ui-datatable-header ui-widget-header ui-corner-top" style="text-align: center;">
+                Materiais de Apoio
+            </div>
+
+            <div class="panel-body" align="center">
+                <h:form>
+
+                    <h:outputLabel for="document" value="Documento desta configuração: " />
+                    <h:selectOneMenu id="document" value="#{downloadManager.documentId}" >
+                        <f:selectItems value="${clienteManager.documents}" var="doc" itemValue="${doc.id}" itemLabel="${doc.desiredName}" />
+                    </h:selectOneMenu>
+                    <br></br>
+
+                    <p:commandButton value="Download" ajax="false">
+                        <p:fileDownload value="#{downloadManager.file}" />
+                    </p:commandButton>
+                </h:form>
+            </div> 
+
+            <br/>
+            <br/>
+
+            <h:link value="Recuar" outcome="/cliente/cliente_configuracoes?faces-redirect=true"/>
+
+            <h:messages errorStyle="color: red" />        
+
+        </ui:define>
+    </ui:composition>
+</html>
+

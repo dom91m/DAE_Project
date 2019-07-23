@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title><ui:insert name="title">Software Management</ui:insert></title>
+        <ui:insert name="css">
+            <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css"/>
+            <h:outputStylesheet library="css" name="geral.css"/>
+        </ui:insert>
+    </h:head>
+    <h:body>
+
+
+        <h:form>  
+            <p:growl id="messages"/>
+                
+            <p:menubar rendered="#{facesContext.externalContext.isUserInRole('ADMIN')}">
+                <p:menuitem value ="Página principal" url="/faces/admin/index_menu.xhtml" />
+                <p:menuitem value ="Utilizadores" url="/faces/admin/administracao_utilizadores.xhtml" />
+                <p:menuitem value ="Configurações" url="/faces/admin/administracao_configuracoes.xhtml" />
+                <p:menuitem value ="Módulos" url="/faces/admin/administracao_modulos.xhtml" />
+                <p:menuitem value ="Softwares" url="/faces/admin/administracao_softwares.xhtml" />
+                
+                
+                <f:facet name="options">
+                    <h:form rendered="#{not empty request.remoteUser}">
+                        <h:commandButton value="Logout" action="#{userManager.logout}" />
+                    </h:form>
+                    <h:commandButton value="Login" action="/index_login?faces-redirect=true" rendered="#{empty request.remoteUser}" />
+                </f:facet>
+            </p:menubar>
+            
+            <p:menubar rendered="#{facesContext.externalContext.isUserInRole('CLIENTE')}">
+                <p:menuitem value ="Página principal" url="/faces/cliente/index.xhtml" />
+                <p:menuitem value ="As minhas Configurações" url="/faces/cliente/cliente_configuracoes.xhtml" />
+                
+                <f:facet name="options">
+                    <h:form rendered="#{not empty request.remoteUser}">
+                        <h:commandButton value="Logout" action="#{userManager.logout}" />
+                    </h:form>
+                    <h:commandButton value="Login" action="/index_login?faces-redirect=true" rendered="#{empty request.remoteUser}" />
+                </f:facet>
+            </p:menubar>
+            
+            <p:menubar rendered="#{empty request.remoteUser}">
+                <p:menuitem value ="Bem-vindo ao Software Management!" url="" />
+                <f:facet name="options">
+                      <h:commandButton value="Login" action="/index_login?faces-redirect=true"  />
+                </f:facet>
+            </p:menubar>
+        </h:form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <div id="main">
+
+            <div class="container">
+
+                <ui:insert name="main">
+                    <!-- All the main application content goes here -->
+                </ui:insert>
+            </div>
+
+        </div>
+
+        <ui:insert name="scripts">
+            <h:outputScript library="bootstrap" name="js/bootstrap.min.js"/>
+        </ui:insert>
+
+    </h:body>
+</html>

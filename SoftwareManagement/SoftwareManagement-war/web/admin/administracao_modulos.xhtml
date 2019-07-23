@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="../templates/skeleton.xhtml">
+        <ui:define name="title">Index</ui:define>
+        <ui:define name="main">
+            <div class="ui-datatable-header ui-widget-header ui-corner-top" style="text-align: center;">
+                Gestão de Modulos
+            </div>
+            
+            
+              <!-- TABELA MODULOS -->
+            <h:form>
+                <p:dataTable 
+                    var="modulo"
+                    summary="List of all modulos"
+                    value="#{administratorManager.allModulosREST}"
+                    widgetVar="modulosTable"
+                    emptyMessage="Não foram encontrados módulos com este(s) critério(s)."
+                    filteredValue="#{dataTableManager.filteredModulos}">
+                    <f:facet name="header">
+                        Módulos
+                    </f:facet>                         
+
+                    <p:column filterBy="#{modulo.code}" headerText="Code" filterMatchMode="contains">
+                        <h:outputText value="${modulo.code}" />
+                    </p:column>
+                    <p:column filterBy="#{modulo.name}" headerText="Nome" filterMatchMode="contains">
+                        <h:outputText value="${modulo.name}" />
+                    </p:column>
+                    <p:column filterBy="#{modulo.descricao}" headerText="Descrição" filterMatchMode="contains">
+                        <h:outputText value="${modulo.descricao}" />
+                    </p:column>
+                    <p:column filterBy="#{modulo.versao}" headerText="Versão" filterMatchMode="contains">
+                        <h:outputText value="${modulo.versao}" />
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <p:outputPanel styleClass="pesquisa">
+                                <h:outputText value="Pesquisar todos os campos:" />
+                                <p:inputText id="globalFilter" onkeyup="PF('modulosTable').filter()" style="width:150px" placeholder="Insira palavra-chave" />
+                            </p:outputPanel>
+                        </f:facet> 
+
+                        <h:commandLink value="Atualizar" action="modulo/update?faces-redirect=true">
+                            <f:setPropertyActionListener target="#{administratorManager.currentModulo}" value="#{modulo}" />
+                        </h:commandLink>
+                        &nbsp;
+                        <h:commandLink value="Remover todos" actionListener="#{administratorManager.removeModuloREST}">
+                            <f:param name="moduloCode" id="moduloCode" value="#{modulo.code}" />
+                        </h:commandLink>
+                    </p:column>      
+                </p:dataTable>
+            </h:form>    
+
+            <h:link value="Novo módulo" outcome="modulo/create.xhtml"/>
+            <br/>
+            <br/>
+
+
+            
+            
+
+            <h:messages errorStyle="color: red" />
+            <h:link value="Recuar" outcome="./index_menu.xhtml"/>
+        </ui:define>
+    </ui:composition>
+
+</html>

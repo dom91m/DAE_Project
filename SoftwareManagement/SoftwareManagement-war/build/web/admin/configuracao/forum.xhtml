@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="../../templates/skeleton.xhtml">
+        <ui:define name="title">Configuração: Forum - Software Management</ui:define>
+        <ui:define name="main">
+
+            <p:dataTable
+                var="questao"
+                summary="List of enrolled questoes"
+                value="#{administratorManager.enrolledQuestoesREST}">
+                <f:facet name="header" class="headerDataTable">
+                    Configuração: Forum
+                </f:facet>  
+
+                <p:column headerText="Titulo">
+                    <h:outputText value="#{questao.titulo}" />
+                </p:column>
+
+                <p:column headerText="Quem iniciou a discussão">
+                    <h:outputText value="#{questao.username}" />
+                </p:column>
+
+                <p:column headerText="Data">
+                    <h:outputText value="#{questao.data}" />
+                </p:column>
+
+
+                <p:column headerText="Mais">                            
+                    <h:form>
+                        <h:commandLink value="Participe nesta questão" action="respostas.xhtml">
+                            <f:setPropertyActionListener target="#{administratorManager.currentQuestao}" value="#{questao}" />
+                        </h:commandLink>
+                    </h:form>
+                </p:column> 
+
+            </p:dataTable>
+            <br/>
+            <br/>
+
+
+            <h:form>         
+                <p:panel id="panel" header="Criar uma nova Questão" style="margin-bottom:10px;">
+                    <h:panelGrid columns="2" cellpadding="5" styleClass="panelGridColumns">   
+                        
+                        <h:outputLabel for="id" value="Id: " />
+                        <p:inputText 
+                            id="id"
+                            size="20"
+                            required="true"
+                            requiredMessage="Error: id não pode estar vazia."
+                            value="#{administratorManager.newQuestao.id}">
+                        </p:inputText>
+                        
+                        <h:outputLabel for="questao" value="Questão: " />
+                        <p:inputText 
+                            id="questao"
+                            size="20"
+                            required="true"
+                            requiredMessage="Error: questao não pode estar vazia."
+                            value="#{administratorManager.newQuestao.titulo}">
+                        </p:inputText>
+                        
+                        <h:commandButton
+                            id="submit"
+                            value="Create"
+                            binding="#{administratorManager.component}" 
+                            action="#{administratorManager.createQuestaoREST}" />
+                        <h:message for="submit" style="color: red"/>
+                    </h:panelGrid >                       
+                </p:panel>
+            </h:form>           
+
+
+
+
+
+            <br/>
+            <br/>
+            <h:link value="Recuar" outcome="/admin/administracao_configuracoes?faces-redirect=true"/>
+
+            <h:messages errorStyle="color: red" />       
+
+
+        </ui:define>
+    </ui:composition> 
+</html>
+

@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="../../templates/skeleton.xhtml">
+        <ui:define name="title">Configuração: Criar - Software Management</ui:define>
+        <ui:define name="main"> 
+            <h:form>         
+                <p:panel id="panel" header="Configuração: Criar" style="margin-bottom:10px;">
+                    <h:panelGrid columns="2" cellpadding="5" styleClass="panelGridColumns">   
+                        <h:outputLabel for="descricao" value="Descricao:" />
+                        <p:inputText 
+                            id="descricao"
+                            size="20"
+                            required="true"
+                            requiredMessage="Error: descricao não pode estar vazia."
+                            value="#{administratorManager.newConfiguracao.descricao}">
+                        </p:inputText>
+
+                        <h:outputLabel for="estado" value="Estado:" />
+                        <p:selectOneMenu
+                            id="estado"
+                            value="#{administratorManager.newConfiguracao.estado}" >
+                            <f:selectItem itemLabel="ATIVO" itemValue="ATIVO" />
+                            <f:selectItem itemLabel="INATIVO" itemValue="INATIVO" />
+                            <f:selectItem itemLabel="SUSPENSO" itemValue="SUSPENSO" />
+                        </p:selectOneMenu>
+
+            
+                        <h:outputLabel for="nomeDoSoftware" value="Nome Do Software" />
+                        <p:selectOneMenu
+                            id="nomeDoSoftware"
+                            value="#{administratorManager.newConfiguracao.softwareId}" >
+                            <f:selectItems
+                                value="#{administratorManager.allSoftwaresREST}"
+                                var="nomeDoSoftware"
+                                itemValue="#{nomeDoSoftware.id}"
+                                itemLabel="#{nomeDoSoftware.name}" />
+                        </p:selectOneMenu>
+                        
+   
+                        <h:outputLabel for="versao" value="Versão:" />
+                        <p:inputText 
+                            id="versao"
+                            size="20"
+                            required="true"
+                            requiredMessage="Erro: versão não pode estar vazia."
+                            value="#{administratorManager.newConfiguracao.versao}">
+                        </p:inputText>
+                        <h:commandButton
+                            id="submit"
+                            value="Create"
+                            binding="#{administratorManager.component}" 
+                            action="#{administratorManager.createConfiguracaoREST}" />
+                        <h:message for="submit" style="color: red"/>
+                    </h:panelGrid >                       
+                </p:panel>
+            </h:form>                
+
+            <h:link value="Recuar" outcome="/admin/administracao_configuracoes?faces-redirect=true"/>
+            <h:messages style="color:red"/>     
+
+        </ui:define>
+    </ui:composition> 
+
+</html>

@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="../templates/skeleton.xhtml">
+        <ui:define name="title">Index</ui:define>
+        <ui:define name="main">
+            <div class="ui-datatable-header ui-widget-header ui-corner-top" style="text-align: center;">
+                Conta de Administração
+            </div>
+            <br/>
+            <br/>
+
+            <ul>
+                <li><a href="administracao_utilizadores.xhtml">Administração de Utilizadores</a></li>
+                <li><a href="administracao_configuracoes.xhtml">Administração de Configurações e Forum</a></li>
+                <ul>
+                    <li><a href="administracao_softwares.xhtml">Gestão de Softwares</a></li>
+                    <li><a href="administracao_modulos.xhtml">Gestão de Modulos</a></li>
+                </ul>
+            </ul>
+            <h:messages errorStyle="color: red" />
+
+        </ui:define>
+    </ui:composition>
+
+</html>
